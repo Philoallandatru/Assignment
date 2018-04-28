@@ -13,7 +13,7 @@ struct Card {
     var isFaceUp = false
     var isMatched = false
     var identifier: Int
-    var clicked = false
+    var clickedTimes = 0
     
     // MARK: I love you
     // give each card an unique identifier when it is created

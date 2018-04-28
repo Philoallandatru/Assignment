@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var flipCountLabel: UILabel!
     var flipCount = 0 {
         didSet {
-            flipCountLabel.text = "Flips: \(game.flipCounts)"
+            flipCountLabel.text = "Flips: \(flipCount)"
         }
     }
     
@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         } else {
             print("chosen card was not included")
         }
+        flipCount = game.flipCounts
         vscores = game.scores;
     }
     
