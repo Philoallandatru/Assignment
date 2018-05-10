@@ -11,11 +11,11 @@ class Concentrate {
     var scores = 0, flipCounts = 0;
     var cards = [Card]()
     
-    private var indexOfOneAndOnlyFaceUpCard: Int? {
+    var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
             for index in cards.indices {
-                if cards[index].isMatched == true {
+                if cards[index].isFaceUp == true {
                     if foundIndex == nil {
                         foundIndex = index
                     } else {
@@ -23,7 +23,7 @@ class Concentrate {
                     }
                 }
             }
-            return foundIndex  
+            return foundIndex
         }
         set {
             for index in cards.indices {
@@ -34,14 +34,16 @@ class Concentrate {
     
     func chooseCard(at index: Int) {
         flipCounts += 1
-        if !cards[index].isMatched { // this card not matched before being choosen
-            if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index { // the user didn't click the same card
-                if cards[matchIndex].identifier == cards[index].identifier { // matched
-                    cards[matchIndex].isMatched = true; cards[matchIndex].clickedTimes = 0
-                    cards[index].isMatched = true; cards[index].clickedTimes = 0
+        if !cards[index].isMatched {
+            if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
+                if cards[matchIndex].identifier == cards[index].identifier {
+                    cards[matchIndex].isMatched = true
+                    cards[matchIndex].clickedTimes = 0
+                    cards[index].isMatched = true
+                    cards[index].clickedTimes = 0
                     scores += 2
                 }
-                cards[index].isFaceUp = true // whether matched or not, this card should be face up
+                cards[index].isFaceUp = true
                 if  !cards[index].isMatched && cards[index].clickedTimes >= 1 && cards[matchIndex].clickedTimes >= 1 {
                     scores -= 1
                 }
