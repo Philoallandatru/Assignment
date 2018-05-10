@@ -8,10 +8,10 @@
 
 import Foundation
 class Concentrate {
-    var scores = 0, flipCounts = 0;
-    var cards = [Card]()
-    
-    var indexOfOneAndOnlyFaceUpCard: Int? {
+    private(set) var scores = 0
+    private(set) var flipCounts = 0
+    private(set) var cards = [Card]()
+    private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
             for index in cards.indices {
@@ -33,6 +33,7 @@ class Concentrate {
     }
     
     func chooseCard(at index: Int) {
+        assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index): chosen card index not in the cards")
         flipCounts += 1
         if !cards[index].isMatched {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
@@ -55,6 +56,7 @@ class Concentrate {
     }
     
     init(numberOfPairsOfCards: Int) { // amazing way of creating cards...
+        assert(numberOfPairsOfCards > 0, "Concentration.init(\(numberOfPairsOfCards): you must have at least one pairs of cards")
         for _ in 1...numberOfPairsOfCards { // do the following thing numberOfPairsOfCards times...
             let card = Card() // create a card
             cards += [card, card] // add two cards(with same information but they are different objects)

@@ -10,27 +10,29 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    lazy var game = Concentrate(numberOfPairsOfCards: numberOfPairsOfCards)
+    private lazy var game = Concentrate(numberOfPairsOfCards: numberOfPairsOfCards)
+    
     var numberOfPairsOfCards: Int {
         return (cardButtons.count + 1)/2
     }
     
-    @IBOutlet weak var scores: UILabel!
-    @IBOutlet weak var flipCountLabel: UILabel!
-    var flipCount = 0 {
+    @IBOutlet private weak var scores: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
+    
+    private(set) var flipCount = 0 {
         didSet {
             flipCountLabel.text = "Flips: \(flipCount)"
         }
     }
     
-    var vscores = 0 {
+    private var vscores = 0 {
         didSet {
             scores.text = "Scores: \(vscores)"
         }
     }
     
-    @IBOutlet var cardButtons: [UIButton]! // card buttom are all in the array here.
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBOutlet private var cardButtons: [UIButton]! // card buttom are all in the array here.
+    @IBAction private func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) { // get the index of the card that you click
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -42,7 +44,7 @@ class ViewController: UIViewController {
     }
     
     /* check state of every card in the cards array, update view according its state */
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         for index in cardButtons.indices { // go throught all the cards
             let button = cardButtons[index] // every card buttom
             let card = game.cards[index] // the same index as the cardButtoms
@@ -57,10 +59,10 @@ class ViewController: UIViewController {
     }
     
     // themes
-    var emojiThemese:[Array<String>] = [["⛷", "🏂", "🏋️‍♀️", "🤸‍♂️", "🤼‍♀️", "⛹️‍♀️", "🤺", "🤾‍♀️", "🏌️‍♀️", "🏌️‍♂️", "🏇", "🧘‍♂️", "🏄‍♀️", "🏄‍♂️", "🧗‍♂️", "🚵‍♀️", "🚴‍♀️"], ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🎱", "🏓", "🏸", "🏒", "🏑", "🏏", "🏹", "🎣", "🥊", "🥋", "⛸", "🥌", "🛷", "🎿"], ["🍏", "🍎", "🍊", "🍋", "🍌", "🍉", "🍒", "🍑", "🍍", "🥥", "🥝", "🍅", "🍆", "🥑", "🥦", "🥒", "🌽", "🥐", "🥞", "🍔", "🍟"], ["🌞", "🌝", "🌛", "🌜", "🌚", "🌕", "🌖", "🌗", "🌘", "🌑", "🌒", "🌓", "🌔", "🌙", "💫", "⭐️", "🌟", "✨", "☄️", "💥"], ["🦊", "🐯", "🐷", "🐣", "🐧", "🐼", "🐹", "🐶", "🐰", "🦁", "🐻", "🐸", "🐬"], ["😀", "😂", "🤣", "😇", "😍", "😜", "😎", "🤪", "🤩", "😡", "🤬"]]
+    private var emojiThemese:[Array<String>] = [["⛷", "🏂", "🏋️‍♀️", "🤸‍♂️", "🤼‍♀️", "⛹️‍♀️", "🤺", "🤾‍♀️", "🏌️‍♀️", "🏌️‍♂️", "🏇", "🧘‍♂️", "🏄‍♀️", "🏄‍♂️", "🧗‍♂️", "🚵‍♀️", "🚴‍♀️"], ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🎱", "🏓", "🏸", "🏒", "🏑", "🏏", "🏹", "🎣", "🥊", "🥋", "⛸", "🥌", "🛷", "🎿"], ["🍏", "🍎", "🍊", "🍋", "🍌", "🍉", "🍒", "🍑", "🍍", "🥥", "🥝", "🍅", "🍆", "🥑", "🥦", "🥒", "🌽", "🥐", "🥞", "🍔", "🍟"], ["🌞", "🌝", "🌛", "🌜", "🌚", "🌕", "🌖", "🌗", "🌘", "🌑", "🌒", "🌓", "🌔", "🌙", "💫", "⭐️", "🌟", "✨", "☄️", "💥"], ["🦊", "🐯", "🐷", "🐣", "🐧", "🐼", "🐹", "🐶", "🐰", "🦁", "🐻", "🐸", "🐬"], ["😀", "😂", "🤣", "😇", "😍", "😜", "😎", "🤪", "🤩", "😡", "🤬"]]
     
-    var emoji = [Int: String]() // identifier : emoji string pair
-    var emojiChoices = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    private var emoji = [Int: String]() // identifier : emoji string pair
+    private var emojiChoices = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
     
     /*
      input: card object
@@ -68,7 +70,7 @@ class ViewController: UIViewController {
      effect: this relationship is also stored in an identifier : string dictionary
      called when: you click a card, and need update the view, you choose an emoji the card faced up
      */
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, emojiChoices.count > 0 { // if the relationship hasn't been created
             let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // no auto-conversion in Swift
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex) // use one emoji just once
@@ -76,7 +78,7 @@ class ViewController: UIViewController {
         return emoji[card.identifier] ?? "?"
     }
 
-    @IBAction func startANewGame(_ sender: UIButton) {
+    @IBAction private func startANewGame(_ sender: UIButton) {
         game = Concentrate(numberOfPairsOfCards: (cardButtons.count + 1)/2)
         let randomIndex = Int(arc4random_uniform(UInt32(emojiThemese.count)))
         emojiChoices = emojiThemese[randomIndex]

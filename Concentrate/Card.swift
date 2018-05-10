@@ -17,10 +17,10 @@ struct Card {
     
     // MARK: I love you
     // give each card an unique identifier when it is created
-    static var identifierFactory = 0
+    private static var identifierFactory = 0
     
     // each time you call this fnction rhe indentifier increases by 1
-    static func getUniqueIdentifier() -> Int {
+    private static func getUniqueIdentifier() -> Int {
         identifierFactory += 1
         return identifierFactory
     }
