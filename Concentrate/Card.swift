@@ -8,12 +8,18 @@
 
 import Foundation
 
-struct Card {
+struct Card: Hashable {
+    var hashValue: Int { return identifier }
+    
     // status of a card
     var isFaceUp = false
     var isMatched = false
-    var identifier: Int
+    private var identifier: Int
     var clickedTimes = 0
+    
+    static func ==(lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier 
+    }
     
     // MARK: I love you
     // give each card an unique identifier when it is created

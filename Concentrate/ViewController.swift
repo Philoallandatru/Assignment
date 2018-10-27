@@ -59,10 +59,12 @@ class ViewController: UIViewController {
     }
     
     // themes
-    private var emojiThemese:[Array<String>] = [["⛷", "🏂", "🏋️‍♀️", "🤸‍♂️", "🤼‍♀️", "⛹️‍♀️", "🤺", "🤾‍♀️", "🏌️‍♀️", "🏌️‍♂️", "🏇", "🧘‍♂️", "🏄‍♀️", "🏄‍♂️", "🧗‍♂️", "🚵‍♀️", "🚴‍♀️"], ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🏐", "🏉", "🎱", "🏓", "🏸", "🏒", "🏑", "🏏", "🏹", "🎣", "🥊", "🥋", "⛸", "🥌", "🛷", "🎿"], ["🍏", "🍎", "🍊", "🍋", "🍌", "🍉", "🍒", "🍑", "🍍", "🥥", "🥝", "🍅", "🍆", "🥑", "🥦", "🥒", "🌽", "🥐", "🥞", "🍔", "🍟"], ["🌞", "🌝", "🌛", "🌜", "🌚", "🌕", "🌖", "🌗", "🌘", "🌑", "🌒", "🌓", "🌔", "🌙", "💫", "⭐️", "🌟", "✨", "☄️", "💥"], ["🦊", "🐯", "🐷", "🐣", "🐧", "🐼", "🐹", "🐶", "🐰", "🦁", "🐻", "🐸", "🐬"], ["😀", "😂", "🤣", "😇", "😍", "😜", "😎", "🤪", "🤩", "😡", "🤬"]]
+    private var emojiThemese:[String] = ["⛷🏂🏋️‍♀️🤸‍♂️🤼‍♀️⛹️‍♀️🤺🤾‍♀️🏌️‍♀️🏌️‍♂️🏇🧘‍♂️🏄‍♀️🏄‍♂️🧗‍♂️🚵‍♀️🚴‍♀️", "⚽️🏀🏈⚾️🎾🏐🏉🎱🏓🏸🏒🏑🏏🏹🎣🥊🥋⛸🥌🛷🎿", "🍏🍎🍊🍋🍌🍉🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒🌽🥐🥞🍔🍟", "🌞🌝🌛🌜🌚🌕🌖🌗🌘🌑🌒🌓🌔🌙💫⭐️🌟✨☄️💥", "🦊🐯🐷🐣🐧🐼🐹🐶🐰🦁🐻🐸🐬", "😀😂🤣😇😍😜😎🤪🤩😡🤬"]
     
-    private var emoji = [Int: String]() // identifier : emoji string pair
-    private var emojiChoices = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    private var emoji = [Card: String]() // identifier : emoji string pair
+//    private var emojiChoices = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    private var emojiChoices = "🦇😱🙀😈🎃👻🍭🍬🍎"
+    
     
     /*
      input: card object
@@ -71,11 +73,11 @@ class ViewController: UIViewController {
      called when: you click a card, and need update the view, you choose an emoji the card faced up
      */
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 { // if the relationship hasn't been created
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count))) // no auto-conversion in Swift
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex) // use one emoji just once
+        if emoji[card] == nil, emojiChoices.count > 0 { // if the relationship hasn't been created
+            let randomStringIndex = emojiChoices.index(emojiChoices.startIndex, offsetBy: emoji.count.arc4random)
+            emoji[card] = String(emojiChoices.remove(at: randomStringIndex)) // use one emoji just once
         }
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
 
     @IBAction private func startANewGame(_ sender: UIButton) {
@@ -86,3 +88,14 @@ class ViewController: UIViewController {
     }
 }
 
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else {
+            return 0
+        }
+    }
+}
